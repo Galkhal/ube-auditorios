@@ -1,121 +1,56 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import Header from './components/Header'
+import Home from './components/Home'
+import Catalogo from './components/Catalogo'
+import DetalleAuditorio from './components/DetalleAuditorio'
+import FormularioReserva from './components/FormularioReserva'
+import MisReservaciones from './components/MisReservaciones'
+import Footer from './components/Footer'
+import './index.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function SobreElSistema() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '64px 24px' }}>
+      <div style={{ color: 'var(--ube-red)', fontSize: '12px', fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>Acerca del sistema</div>
+      <h1 style={{ fontSize: 'clamp(24px, 4vw, 40px)', marginBottom: '24px' }}>UBE Auditorios</h1>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', color: 'var(--ube-gray-700)', lineHeight: 1.8, fontSize: '15px' }}>
+        <p><strong>UBE Auditorios</strong> es el sistema centralizado de reservas y gestión de espacios de la Universidad Bolivariana del Ecuador.</p>
+        <p>El sistema gestiona los <strong>8 auditorios y salas</strong> del campus de Durán, incluyendo el <strong>Gran Auditorio UBE</strong> con capacidad para 1.200 personas, recién inaugurado.</p>
+        <div style={{ background: 'rgba(26,58,107,0.06)', borderRadius: '12px', padding: '24px', border: '1px solid rgba(26,58,107,0.12)' }}>
+          <h3 style={{ fontSize: '17px', marginBottom: '12px' }}>Funcionalidades principales</h3>
+          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {['Catálogo completo de auditorios con equipamiento detallado','Solicitud de reservas con wizard paso a paso','Consulta de disponibilidad en tiempo real','Selección de servicios adicionales por evento','Seguimiento de reservaciones y estado de aprobación','Confirmación en menos de 2 horas hábiles','Gestión administrativa completa para el equipo UBE','Inventario y tracking de equipos audiovisuales'].map(item => (
+              <li key={item} style={{ display: 'flex', gap: '8px', fontSize: '14px' }}>
+                <span style={{ color: 'var(--ube-blue)', fontWeight: 700 }}>→</span>{item}
+              </li>
+            ))}
           </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <p style={{ color: 'var(--ube-gray-500)', fontSize: '13px', fontStyle: 'italic' }}>Demo funcional desarrollado como propuesta técnica.</p>
+      </div>
+    </div>
   )
 }
 
-export default App
+export default function App() {
+  const [vista, setVista] = useState('home')
+  const [auditorioSeleccionado, setAuditorioSeleccionado] = useState(null)
+  const [reservaciones, setReservaciones] = useState([])
+
+  const agregarReservacion = (r) => setReservaciones(prev => [r, ...prev])
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header vista={vista} setVista={setVista} totalReservaciones={reservaciones.length}/>
+      <main style={{ flex: 1 }}>
+        {vista === 'home' && <Home setVista={setVista} setAuditorioSeleccionado={setAuditorioSeleccionado}/>}
+        {vista === 'catalogo' && <Catalogo setVista={setVista} setAuditorioSeleccionado={setAuditorioSeleccionado}/>}
+        {vista === 'detalle' && <DetalleAuditorio auditorio={auditorioSeleccionado} setVista={setVista} setAuditorioSeleccionado={setAuditorioSeleccionado}/>}
+        {vista === 'reservar' && <FormularioReserva auditorioPreseleccionado={auditorioSeleccionado} setVista={setVista} agregarReservacion={agregarReservacion}/>}
+        {vista === 'misreservaciones' && <MisReservaciones reservaciones={reservaciones} setVista={setVista}/>}
+        {vista === 'sobre' && <SobreElSistema/>}
+      </main>
+      <Footer/>
+    </div>
+  )
+}
